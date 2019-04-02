@@ -77,10 +77,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             c = Camera.open(camera%c.getNumberOfCameras()); // attempt to get a Camera instance
             c.setDisplayOrientation(90);
-
+            Log.e("MyComponent","camera good : "+ c);
         }
         catch (Exception e){
-            // Camera is not available (in use or does not exist)
+            Log.e("MyComponent","get camera exception");
         }
         return c; // returns null if camera is unavailable
     }

@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.Choreographer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 public class CameraHeimdall extends FrameLayout {
     private Context context;
@@ -65,4 +67,35 @@ public class CameraHeimdall extends FrameLayout {
         return true;
     }
 
+    public void toastFn(){
+        Log.e("MyComponent","com in method");
+        Toast.makeText(context,"asdf",Toast.LENGTH_SHORT).show();
+    }
+    public void cameraChange(){
+        preview.removeView(mPreview);
+        mCamera.release();
+
+        cameraIndex++;
+        mCamera = CameraPreview.getCameraInstance(cameraIndex);
+        Log.e("MyComponent","mCamera : "+mCamera+" cameraIndex : "+cameraIndex);
+        mPreview = new CameraPreview(context, mCamera);
+        preview.addView(mPreview);
+
+        Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
+            @Override
+            public void doFrame(long frameTimeNanos) {
+                for (int i = 0; i < getChildCount(); i++) {
+                    View child = getChildAt(i);
+                    child.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
+                            MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY));
+                    child.layout(0, 0, child.getMeasuredWidth(), child.getMeasuredHeight());
+                }
+                getViewTreeObserver().dispatchOnGlobalLayout();
+            }
+        });
+    }
+
+    public void recording(){
+
+    }
 }

@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
+import {Platform, StyleSheet, Text, View, PermissionsAndroid, Button, Alert} from 'react-native';
 import CameraHeimdall from './CameraHeimdall';
 
 
@@ -28,27 +28,46 @@ async function requestCameraPermission() {
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       console.log('You can use the camera');
+      //this.camera.toastFn();
     } else {
       console.log('Camera permission denied');
+      //this.camera.toastFn();
     }
   } catch (err) {
     console.warn(err);
   }
 }
 
+function testFn(){
+  this.camera.toastFn();
+}
+
+
 
 type Props = {};
 export default class App extends Component<Props> {
+  constructor(props){
+    super(props);
+    this.state = {a : true};
+  }
+
   async componentDidMount(){
     await requestCameraPermission()
   }
   
   render() {
+    console.log('re rander app.js');
     return (
       <View style={styles.container}>
-        <CameraHeimdall style={{ flex: 1, width: '100%', height: '100%' }} />
+      <CameraHeimdall/>               
       </View>
     );
+  }
+
+  SampleFunction1(){
+ 
+    Alert.alert("Function Without Argument");
+    
   }
 }
 
