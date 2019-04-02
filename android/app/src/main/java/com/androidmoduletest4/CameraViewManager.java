@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 public class CameraViewManager extends SimpleViewManager<CameraHeimdall> {
 
     public static final int CHANGE_CAMERA = 1;
+    public static final int RECORD = 2;
 
     Context context;
     CameraHeimdall cameraHeimdall;
@@ -43,7 +44,7 @@ public class CameraViewManager extends SimpleViewManager<CameraHeimdall> {
     @Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("changeCamera",CHANGE_CAMERA);
+        return MapBuilder.of("changeCamera",CHANGE_CAMERA,"record",RECORD);
     }
 
     @Override
@@ -55,6 +56,12 @@ public class CameraViewManager extends SimpleViewManager<CameraHeimdall> {
                 Log.e("MyComponent","3"+context);
                 //Toast.makeText(context,"asdf",Toast.LENGTH_SHORT);
                 cameraHeimdall.cameraChange();
+                return;
+            }
+            case RECORD:{
+                Log.e("MyComponent","android record");
+                //Toast.makeText(context,"asdf",Toast.LENGTH_SHORT);
+                cameraHeimdall.record();
                 return;
             }
         }

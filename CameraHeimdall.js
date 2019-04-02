@@ -11,19 +11,7 @@ var viewProps = {
   }
 }
 
-
-
 const RNCameraHeimdall = requireNativeComponent('CameraView', viewProps);
-
-/*
-_testFn(){
-  Alert.alert("asdf");
-  
-  
-}
-*/
-
-
 
 export default class CameraHeimdall extends Component {
 
@@ -39,8 +27,8 @@ export default class CameraHeimdall extends Component {
           onPress={() => { this.cameraChange() }}
           title="Camera" />
         <Button
-          onPress={() => { this.recording() }}
-          title="Camera" />
+          onPress={() => { this.record() }}
+          title="record" />
       </View>
     );
   }
@@ -53,8 +41,13 @@ export default class CameraHeimdall extends Component {
       [],
     );    
   }
-  recording(){
-
+  record(){
+    UIManager.dispatchViewManagerCommand(
+      ReactNative.findNodeHandle(this.ref),
+      UIManager.CameraView.Commands.record,
+      //UIManager.getViewManagerConfig.Commands.changeCamera,
+      [],
+    );
   }
 
 }

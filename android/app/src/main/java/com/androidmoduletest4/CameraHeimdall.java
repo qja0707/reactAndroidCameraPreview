@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
+import android.media.MediaRecorder;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Choreographer;
@@ -11,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
 
 public class CameraHeimdall extends FrameLayout {
     private Context context;
@@ -21,6 +27,9 @@ public class CameraHeimdall extends FrameLayout {
     int cameraIndex=0;
 
     FrameLayout preview;
+
+    Boolean isRecording = false;
+    MediaRecorder mediaRecorder;
 
     public CameraHeimdall(Context context) {
         super(context);
@@ -95,7 +104,89 @@ public class CameraHeimdall extends FrameLayout {
         });
     }
 
-    public void recording(){
+    public void record(){
+        if (isRecording) {
+            // stop recording and release camera
+            mediaRecorder.stop();  // stop the recording
+            releaseMediaRecorder(); // release the MediaRecorder object
+            mCamera.lock();         // take camera access back from MediaRecorder
 
+            // inform the user that recording has stopped
+            //setCaptureButtonText("Capture");
+            isRecording = false;
+        } else {
+            // initialize video camera
+            if (prepareVideoRecorder()) {
+                // Camera is available and unlocked, MediaRecorder is prepared,
+                // now you can start recording
+                mediaRecorder.start();
+
+                // inform the user that recording has started
+                //setCaptureButtonText("Stop");
+                isRecording = true;
+            } else {
+                // prepare didn't work, release the camera
+                releaseMediaRecorder();
+                // inform user
+            }
+        }
+    }
+    private boolean prepareVideoRecorder(){
+
+        File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test");
+
+        if(!directory.exists()&& !directory.isDirectory()){
+            Log.d("make directory", "prepareVideoRecorder: ");
+            if(directory.mkdirs()){
+
+            }else{
+                Log.e("create directory fail", "prepareVideoRecorder: ");
+                return false;
+            }
+        }
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test/test.mp4");
+
+        mCamera = CameraPreview.getCameraInstance(cameraIndex);
+        mCamera.setDisplayOrientation(90);
+        mediaRecorder = new MediaRecorder();
+
+        // Step 1: Unlock and set camera to MediaRecorder
+        mCamera.unlock();
+        mediaRecorder.setCamera(mCamera);
+
+        // Step 2: Set sources
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+
+        // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
+        mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+
+        // Step 4: Set output file
+        mediaRecorder.setOutputFile(file.getPath());
+
+        // Step 5: Set the preview output
+        mediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
+
+        // Step 6: Prepare configured MediaRecorder
+        try {
+            mediaRecorder.prepare();
+        } catch (IllegalStateException e) {
+            Log.d("gyubeom", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
+            releaseMediaRecorder();
+            return false;
+        } catch (IOException e) {
+            Log.d("gyubeom", "IOException preparing MediaRecorder: " + e.getMessage());
+            releaseMediaRecorder();
+            return false;
+        }
+        return true;
+    }
+    private void releaseMediaRecorder(){
+        if (mediaRecorder != null) {
+            mediaRecorder.reset();   // clear recorder configuration
+            mediaRecorder.release(); // release the recorder object
+            mediaRecorder = null;
+            mCamera.lock();           // lock camera for later use
+        }
     }
 }
