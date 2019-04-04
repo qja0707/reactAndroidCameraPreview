@@ -71,7 +71,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     /** A safe way to get an instance of the Camera object. */
     public static Camera getCameraInstance(int camera){
         // Assume thisActivity is the current activity
-
         Camera c = null;
         System.out.println(c.getNumberOfCameras());
         try {

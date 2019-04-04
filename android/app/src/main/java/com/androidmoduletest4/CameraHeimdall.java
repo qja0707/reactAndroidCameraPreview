@@ -22,7 +22,7 @@ public class CameraHeimdall extends FrameLayout {
     private Context context;
     private Camera mCamera;
     private CameraPreview mPreview;
-    static final int REQUEST_VIDEO_CAPTURE = 1;
+    //static final int REQUEST_VIDEO_CAPTURE = 1;
 
     int cameraIndex=0;
 
@@ -76,10 +76,6 @@ public class CameraHeimdall extends FrameLayout {
         return true;
     }
 
-    public void toastFn(){
-        Log.e("MyComponent","com in method");
-        Toast.makeText(context,"asdf",Toast.LENGTH_SHORT).show();
-    }
     public void cameraChange(){
         preview.removeView(mPreview);
         mCamera.release();
