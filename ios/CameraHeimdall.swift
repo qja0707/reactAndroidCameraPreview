@@ -41,6 +41,8 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
   var totalCamera : Array<Any> = []
   var cameraIndex = 0
   
+  let maxDuration = CMTimeMakeWithSeconds(30,preferredTimescale: 30)
+  
   class PreviewView: UIView {
     override class var layerClass: AnyClass {
       return AVCaptureVideoPreviewLayer.self
@@ -116,7 +118,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     self.captureSession.addInput(videoDeviceInput)
     
     //let photoOutput = AVCapturePhotoOutput()
-    
+    //photoOutput.maxRecordedDuration = maxDuration
     guard captureSession.canAddOutput(photoOutput) else { return }
     captureSession.sessionPreset = .high
     captureSession.addOutput(photoOutput)
@@ -164,6 +166,8 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
   
   @objc func record(){
     print("cameraIndex : ",cameraIndex)
+    
+    
     if photoOutput.isRecording {
       photoOutput.stopRecording()
       print("record stop")

@@ -69,18 +69,24 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
     /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(int camera){
+    public static Camera getCameraInstance(int camera, Camera.CameraInfo cameraInfo){
         // Assume thisActivity is the current activity
         Camera c = null;
+        Camera.Parameters parameters = null;
         System.out.println(c.getNumberOfCameras());
         try {
             c = Camera.open(camera%c.getNumberOfCameras()); // attempt to get a Camera instance
+            parameters = c.getParameters();
             c.setDisplayOrientation(90);
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+            c.setParameters(parameters);
             Log.e("MyComponent","camera good : "+ c);
+            c.getCameraInfo(camera%c.getNumberOfCameras(),cameraInfo);
         }
         catch (Exception e){
             Log.e("MyComponent","get camera exception");
         }
+
         return c; // returns null if camera is unavailable
     }
 }

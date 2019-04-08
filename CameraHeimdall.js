@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import ReactNative, { requireNativeComponent, ViewPropTypes, UIManager, findNodeHandle, Button, View, Alert, TouchableOpacity, StyleSheet } from 'react-native';
+import ReactNative, { requireNativeComponent, ViewPropTypes, UIManager, findNodeHandle, Button, View, Alert, TouchableOpacity, StyleSheet, Easing, Text } from 'react-native';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 //import console = require("console");
 var viewProps = {
@@ -14,40 +15,61 @@ var viewProps = {
 const RNCameraHeimdall = requireNativeComponent('CameraView', viewProps);
 
 export default class CameraHeimdall extends Component {
+  state = {
+    fill: 0,
+  };
 
   render() {
     console.log('render called');
+
     return (
       <View
-        style={{ flex: 1, width: '100%', height: '100%' }}>
+        style={{ flex: 1, width: '100%', height: '100%' }}>        
         <RNCameraHeimdall
           style={{ width: '100%', height: '100%', position: 'absolute' }}
           ref={ref => this.ref = ref}>
         </RNCameraHeimdall>
         <View style={{ flex: 1, flexDirection: 'row', width: '100%', height: '100%', position: 'absolute' }}>
 
-          <View style={{ flex: 1 , justifyContent: 'flex-end', marginBottom: 20}}>
-            <TouchableOpacity style={[styles.record_button, { alignSelf: 'bottom', backgroundColor: 'red' , alignSelf: 'center'}]}
+          <View style={[styles.camera_wraping_view,{ marginBottom: 20 }]}>
+            <TouchableOpacity style={[styles.record_button, { backgroundColor: 'yellow', alignSelf: 'center' }]}
               onPress={() => { this.cameraChange() }}
             />
           </View>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={[styles.record_button, { backgroundColor: 'white' }]}
-              onPress={this._onPressButton}
-            />
-          </View>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={[styles.record_button, { backgroundColor: 'blue' }]}
-              onPress={this._onPressButton}
-            />
+          
+          <View style={[styles.camera_wraping_view,{ marginBottom: 15 }]}>
+            <AnimatedCircularProgress
+              style={{alignSelf: 'center'}}
+              ref={(ref) => this.circularProgres = ref}
+              size={60}
+              width={5}
+              duration={30000}
+              rotation={0}
+              fill={this.state.fill}
+              tintColor="#ff0000"
+              onAnimationComplete={() => console.log('onAnimationComplete')}
+              backgroundColor="#3d5875"
+            >
+              {
+                (fill) => (
+                  <TouchableOpacity                    
+                    onPress={() => { this.start() }}
+                  >
+                  <View style={[styles.record_button]} />
+                  <View style={[styles.record_start]} />
+                  </TouchableOpacity>
+                )
+              }
+            </AnimatedCircularProgress>
           </View>
 
-
+          <View style={[styles.camera_wraping_view,{ marginBottom: 20 }]}>
+            <TouchableOpacity
+              style={[styles.record_button, { backgroundColor: 'blue', alignSelf: 'center'}]}
+              onPress={() => { this.cameraChange() }}
+            />
+          </View>
         </View>
-
-
       </View>
     );
   }
@@ -68,7 +90,11 @@ export default class CameraHeimdall extends Component {
       [],
     );
   }
-
+  start() {
+    this.setState({ fill: 100 })
+    this.record()
+    //this.circularProgres.performLinearAnimation(100,8000);
+  }
 }
 
 const styles = StyleSheet.create({
@@ -77,15 +103,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 10
   },
-  record_button: {
-    //alignItems: 'center',
-    //position: 'absolute',
+  record_button: {    
     width: 50,
     height: 50,
     borderRadius: 100 / 2,
-    //backgroundColor: '#DDDDDD',
+    backgroundColor: 'white',
     padding: 10,
   },
+  record_start: {
+    position: 'absolute',    
+    width: 25,
+    height: 25,
+    borderRadius: 100 / 2,
+    backgroundColor: 'red',    
+    alignSelf: 'center',
+    marginTop : 13,
+  },
+  record_stop: {
+    position: 'absolute',
+    width: 20,
+    height: 20,    
+    backgroundColor: 'red',
+    padding: 10,
+  },
+  camera_wraping_view: {
+    flex: 1, 
+    justifyContent: 'flex-end',
+  }
 })
 
 //module.exports = requireNativeComponent('CameraView', viewProps);

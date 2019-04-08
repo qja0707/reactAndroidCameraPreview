@@ -18,13 +18,16 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
-public class CameraHeimdall extends FrameLayout {
+public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoListener{
     private Context context;
     private Camera mCamera;
     private CameraPreview mPreview;
     //static final int REQUEST_VIDEO_CAPTURE = 1;
 
+    static final int MAX_DURATION = 30000; // 최대 녹화 시간 30초
+
     int cameraIndex=0;
+    Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
 
     FrameLayout preview;
 
@@ -41,6 +44,7 @@ public class CameraHeimdall extends FrameLayout {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = layoutInflater.inflate(R.layout.layout, this, false);
 
+        cameraIndex = 0;
         preview = v.findViewById(R.id.camera_heimdall);
 
         addView(v);
@@ -55,7 +59,7 @@ public class CameraHeimdall extends FrameLayout {
             Log.e("MyComponent","need Permissions");
         }else{
             Log.e("MyComponent","pass Permissions");
-            mCamera = CameraPreview.getCameraInstance(cameraIndex);
+            mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
 
             // Create our Preview view and set it as the content of our activity.
             mPreview = new CameraPreview(context, mCamera);
@@ -77,12 +81,13 @@ public class CameraHeimdall extends FrameLayout {
     }
 
     public void cameraChange(){
+
         preview.removeView(mPreview);
         mCamera.release();
 
         cameraIndex++;
-        mCamera = CameraPreview.getCameraInstance(cameraIndex);
-        Log.e("MyComponent","mCamera : "+mCamera+" cameraIndex : "+cameraIndex);
+        mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
+
         mPreview = new CameraPreview(context, mCamera);
         preview.addView(mPreview);
 
@@ -98,18 +103,24 @@ public class CameraHeimdall extends FrameLayout {
                 getViewTreeObserver().dispatchOnGlobalLayout();
             }
         });
+
+        Log.e("MyComponent","mCamera : "+ cameraInfo.facing);
+    }
+    private Boolean recordStop(){
+        // stop recording and release camera
+        mediaRecorder.stop();  // stop the recording
+        releaseMediaRecorder(); // release the MediaRecorder object
+        mCamera.lock();         // take camera access back from MediaRecorder
+
+        // inform the user that recording has stopped
+        //setCaptureButtonText("Capture");
+        isRecording = false;
+        return isRecording;
     }
 
     public void record(){
         if (isRecording) {
-            // stop recording and release camera
-            mediaRecorder.stop();  // stop the recording
-            releaseMediaRecorder(); // release the MediaRecorder object
-            mCamera.lock();         // take camera access back from MediaRecorder
-
-            // inform the user that recording has stopped
-            //setCaptureButtonText("Capture");
-            isRecording = false;
+            recordStop();
         } else {
             // initialize video camera
             if (prepareVideoRecorder()) {
@@ -142,7 +153,7 @@ public class CameraHeimdall extends FrameLayout {
         }
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test/test.mp4");
 
-        mCamera = CameraPreview.getCameraInstance(cameraIndex);
+        mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
         mCamera.setDisplayOrientation(90);
         mediaRecorder = new MediaRecorder();
 
@@ -163,8 +174,12 @@ public class CameraHeimdall extends FrameLayout {
         // Step 5: Set the preview output
         mediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
 
+        mediaRecorder.setMaxDuration(MAX_DURATION);
+        mediaRecorder.setOnInfoListener(this::onInfo);
+
         // Step 6: Prepare configured MediaRecorder
         try {
+
             mediaRecorder.prepare();
         } catch (IllegalStateException e) {
             Log.d("gyubeom", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
@@ -184,5 +199,11 @@ public class CameraHeimdall extends FrameLayout {
             mediaRecorder = null;
             mCamera.lock();           // lock camera for later use
         }
+    }
+
+    @Override
+    public void onInfo(MediaRecorder mr, int what, int extra) {
+        Log.e("MyComponent","record is stop because time is up");
+        recordStop();
     }
 }
