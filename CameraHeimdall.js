@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import ReactNative, { requireNativeComponent, ViewPropTypes, UIManager, findNodeHandle, Button, View, Alert, TouchableOpacity, StyleSheet, Easing, Text } from 'react-native';
+import ReactNative, { requireNativeComponent, ViewPropTypes, UIManager, findNodeHandle, Button, View, Alert, TouchableOpacity, StyleSheet, Easing, Text,
+ SafeAreaView, PermissionsAndroid} from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 //import console = require("console");
@@ -14,17 +15,42 @@ var viewProps = {
 
 const RNCameraHeimdall = requireNativeComponent('CameraView', viewProps);
 
+async function requestCameraPermission() {
+  try {
+    const granted = await PermissionsAndroid.requestMultiple(
+      [PermissionsAndroid.PERMISSIONS.CAMERA,      
+      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the camera');
+      //this.camera.toastFn();
+    } else {
+      console.log('Camera permission denied');
+      //this.camera.toastFn();
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+}
+
 export default class CameraHeimdall extends Component {
   state = {
     fill: 0,
+    isRecord : false,
   };
 
-  render() {
-    console.log('render called');
+  async componentWillMount(){
+    await requestCameraPermission()
+  }
 
+  render() {
+    console.log(this.state.isRecord);
+    const {navigation} = this.props;
     return (
+      <SafeAreaView style={{flex:1}}>
       <View
-        style={{ flex: 1, width: '100%', height: '100%' }}>        
+        style={{ flex: 1, width: '100%', height: '100%', backgroundColor: '#ddd'}}>        
         <RNCameraHeimdall
           style={{ width: '100%', height: '100%', position: 'absolute' }}
           ref={ref => this.ref = ref}>
@@ -53,7 +79,8 @@ export default class CameraHeimdall extends Component {
               {
                 (fill) => (
                   <TouchableOpacity                    
-                    onPress={() => { this.start() }}
+                    //onPress={() => { this.start() }}
+                    onPress={() => this.record(navigation)}
                   >
                   <View style={[styles.record_button]} />
                   <View style={[styles.record_start]} />
@@ -71,6 +98,7 @@ export default class CameraHeimdall extends Component {
           </View>
         </View>
       </View>
+      </SafeAreaView>
     );
   }
   cameraChange() {
@@ -82,13 +110,22 @@ export default class CameraHeimdall extends Component {
       [],
     );
   }
-  record() {
+  record(navigation) {
+    this.setState({ fill: 100 })
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this.ref),
       UIManager.CameraView.Commands.record,
       //UIManager.getViewManagerConfig.Commands.changeCamera,
       [],
     );
+    if(this.state.isRecord == false){
+      console.log(this.state.isRecord);
+      this.setState({isRecord:true})
+    }else{
+      console.log(this.state.isRecord);
+      this.setState({isRecord:false})
+      navigation.navigate('AfterRecord',{gps:'Seoul'})
+    }
   }
   start() {
     this.setState({ fill: 100 })
