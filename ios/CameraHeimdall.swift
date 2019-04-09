@@ -10,6 +10,7 @@ import Foundation
 
 import UIKit
 import AVFoundation
+import CoreLocation
 
 @available(iOS 10.0, *)
 class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
@@ -43,6 +44,8 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
   
   let maxDuration = CMTimeMakeWithSeconds(30,preferredTimescale: 30)
   
+  //var locationManager:CLLocationManager
+  
   class PreviewView: UIView {
     override class var layerClass: AnyClass {
       return AVCaptureVideoPreviewLayer.self
@@ -55,10 +58,6 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
   }
   
   ////////////////////////
-  
-  
-  
-  
   
   
   
@@ -169,7 +168,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     
     
     if photoOutput.isRecording {
-      photoOutput.stopRecording()
+      photoOutput.stopRecording()      
       print("record stop")
     } else {
       let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

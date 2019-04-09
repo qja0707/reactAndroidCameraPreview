@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, PermissionsAndroid, Button, Alert} from 'react-native';
+import {Platform, StyleSheet, Text, View, PermissionsAndroid, Button, Alert, SafeAreaView} from 'react-native';
 import CameraHeimdall from './CameraHeimdall';
 
 
@@ -38,12 +38,6 @@ async function requestCameraPermission() {
   }
 }
 
-function testFn(){
-  this.camera.toastFn();
-}
-
-
-
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props){
@@ -55,12 +49,13 @@ export default class App extends Component<Props> {
     await requestCameraPermission()
   }
   
-  render() {
-    console.log('re rander app.js');
+  render() {    
     return (
+      <SafeAreaView style={{flex:1, backgroundColor: '#ddd'}}>
       <View style={styles.container}>
       <CameraHeimdall/>               
       </View>
+      </SafeAreaView>
     );
   }
 
@@ -74,8 +69,7 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',    
+    justifyContent: 'center',        
   },
   welcome: {
     fontSize: 20,
