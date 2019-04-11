@@ -12,7 +12,4 @@
 @interface RCT_EXTERN_MODULE(CameraViewManager, RCTViewManager)
 RCT_EXTERN_METHOD(changeCamera:(nonnull NSNumber *)node)
 RCT_EXTERN_METHOD(record:(id)view)
-
 @end
-
-

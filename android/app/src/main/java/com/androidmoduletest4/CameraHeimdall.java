@@ -13,7 +13,6 @@ import android.view.Choreographer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +30,8 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
 
     FrameLayout preview;
 
-    Boolean isRecording = false;
+    static Boolean isRecording = false;
+    static File file;
     MediaRecorder mediaRecorder;
 
     public CameraHeimdall(Context context) {
@@ -151,7 +151,7 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
                 return false;
             }
         }
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test/test.mp4");
+        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test/test.mp4");
 
         mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
         mCamera.setDisplayOrientation(90);
@@ -174,7 +174,7 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
         // Step 5: Set the preview output
         mediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
 
-        mediaRecorder.setMaxDuration(MAX_DURATION);
+        //mediaRecorder.setMaxDuration(MAX_DURATION);
         mediaRecorder.setOnInfoListener(this::onInfo);
 
         // Step 6: Prepare configured MediaRecorder

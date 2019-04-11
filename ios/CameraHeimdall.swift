@@ -39,6 +39,8 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
                                                                       mediaType: AVMediaType.video,
                                                                       position: AVCaptureDevice.Position.unspecified)
   let photoOutput = AVCaptureMovieFileOutput()
+  static var isRecording = false
+  static var fileUrl : URL = NSURL(string: "null")! as URL
   var totalCamera : Array<Any> = []
   var cameraIndex = 0
   
@@ -168,14 +170,24 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     
     
     if photoOutput.isRecording {
-      photoOutput.stopRecording()      
+      photoOutput.stopRecording()
+      CameraHeimdall.isRecording = false
       print("record stop")
     } else {
       let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-      let fileUrl = paths[0].appendingPathComponent("output.mov")
-      try? FileManager.default.removeItem(at: fileUrl)
-      photoOutput.startRecording(to: fileUrl, recordingDelegate: self as AVCaptureFileOutputRecordingDelegate)
+      CameraHeimdall.fileUrl = paths[0].appendingPathComponent("output.mov")
+      try? FileManager.default.removeItem(at: CameraHeimdall.fileUrl)
+      photoOutput.startRecording(to: CameraHeimdall.fileUrl, recordingDelegate: self as AVCaptureFileOutputRecordingDelegate)
+      CameraHeimdall.isRecording = true
       print("record start")
     }
+    //CameraHeimdall.isRecording = photoOutput.isRecording
+  }
+  
+  static func getIsRecording() -> Bool{
+    return CameraHeimdall.isRecording
+  }
+  static func getFileUrl() -> String{
+    return CameraHeimdall.fileUrl.absoluteString
   }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
@@ -56,13 +57,13 @@ public class CameraViewManager extends SimpleViewManager<CameraHeimdall> {
                 Log.e("MyComponent","3"+context);
                 //Toast.makeText(context,"asdf",Toast.LENGTH_SHORT);
                 cameraHeimdall.cameraChange();
-                return;
+                break;
             }
             case RECORD:{
                 Log.e("MyComponent","android record");
                 //Toast.makeText(context,"asdf",Toast.LENGTH_SHORT);
                 cameraHeimdall.record();
-                return;
+                break;
             }
         }
 

@@ -7,6 +7,7 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +22,11 @@ public class CameraViewPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
         Log.e("MyComponent", "create modules");
-        return Collections.emptyList();
+        List<NativeModule> modules = new ArrayList<>();
+
+        modules.add(new GetDataModule(reactContext));
+
+        return modules;
     }
 
     @Nonnull
