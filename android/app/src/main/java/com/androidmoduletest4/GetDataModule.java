@@ -19,15 +19,15 @@ public class GetDataModule extends ReactContextBaseJavaModule {
     }
     @ReactMethod
     public void getIsRecording(Callback booleanCallback){
-        booleanCallback.invoke(CameraHeimdall.isRecording);
+        booleanCallback.invoke("null",CameraHeimdall.isRecording);
     }
 
     @ReactMethod
     public void getFilePath(Callback stringCallback){
         try{
-            stringCallback.invoke(CameraHeimdall.file.getPath());
+            stringCallback.invoke("null",CameraHeimdall.file.getPath());
         }catch(NullPointerException e){
-            stringCallback.invoke("null");
+            stringCallback.invoke("null","null");
         }
 
     }

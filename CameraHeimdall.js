@@ -63,7 +63,7 @@ export default class CameraHeimdall extends Component {
 
             <View style={[styles.camera_wraping_view, { marginBottom: 20 }]}>
               <TouchableOpacity style={[styles.record_button, { backgroundColor: 'yellow', alignSelf: 'center' }]}
-                onPress={() => { this.cameraChange() }}
+                onPress={() => { navigation.navigate('ExternalLink') }}
               />
             </View>
 
@@ -132,7 +132,7 @@ export default class CameraHeimdall extends Component {
 
         } else {
           NativeModules.GetData.getFilePath(
-            (err,getFilePath) => {
+            (err, getFilePath) => {
               console.warn('file path ', getFilePath);
               if(getFilePath != "null"){
                 console.warn('file path2 ', getFilePath);

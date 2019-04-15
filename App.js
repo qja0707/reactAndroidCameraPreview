@@ -11,6 +11,7 @@ import React, {Component} from 'react';
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import CameraHeimdall from "./CameraHeimdall";
 import AfterRecord from "./AfterRecord";
+import ExternalLink from "./ExternalLink";
 
 const AppNavigator = createSwitchNavigator({
   CameraHeimdall: {
@@ -21,7 +22,13 @@ const AppNavigator = createSwitchNavigator({
       navigationOption: () =>({
         headerTruncatedBackTitle: `to CameraHeimdall`
       }),
-  }
+  },
+  ExternalLink: {
+    screen: ExternalLink,
+    navigationOption: () =>({
+      headerTruncatedBackTitle: `to CameraHeimdall`
+    }),
+}
 });
 
 export default createAppContainer(AppNavigator);
