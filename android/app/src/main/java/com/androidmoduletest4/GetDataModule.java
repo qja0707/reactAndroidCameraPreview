@@ -31,4 +31,14 @@ public class GetDataModule extends ReactContextBaseJavaModule {
         }
 
     }
+
+    @ReactMethod
+    public void getCameraFacing(Callback stringCallback){
+        try{
+            stringCallback.invoke("null",CameraHeimdall.cameraFacing);
+        }catch(NullPointerException e){
+            stringCallback.invoke("null","null");
+        }
+
+    }
 }

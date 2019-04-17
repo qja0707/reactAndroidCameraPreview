@@ -20,5 +20,8 @@ class GetData: NSObject {
     
     callback([NSNull() ,CameraHeimdall.getFileUrl()])
   }
-  
+  @objc func getCameraFacing(_ callback: RCTResponseSenderBlock) {
+    
+    callback([NSNull() ,CameraHeimdall.getCameraFacing()])
+  }
 }

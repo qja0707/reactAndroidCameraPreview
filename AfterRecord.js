@@ -9,8 +9,8 @@ export default class AfterRecord extends React.Component {
         super(props);
         this.state = {            
             position: new Animated.ValueXY({x:0, y:0}),
-            curY:0,
-            fromY: 0,
+            curY:0.01,
+            fromY: 0.01,
             toY: 150,        
           };
     }
@@ -18,6 +18,7 @@ export default class AfterRecord extends React.Component {
     render() {
         const { navigation } = this.props;
         const filePath = navigation.getParam('filePath', 'null');
+        navigation.state.params.onNavigateBack(true);
         //console.warn("after record : ", filePath);
         return (
             <SafeAreaView style={{ flex: 1 }}>

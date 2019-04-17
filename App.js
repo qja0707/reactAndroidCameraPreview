@@ -8,12 +8,12 @@
 
 import React, {Component} from 'react';
 //import {Platform, StyleSheet, Text, View, } from 'react-native';
-import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 import CameraHeimdall from "./CameraHeimdall";
 import AfterRecord from "./AfterRecord";
 import ExternalLink from "./ExternalLink";
 
-const AppNavigator = createSwitchNavigator({
+const AppNavigator = createStackNavigator({
   CameraHeimdall: {
     screen: CameraHeimdall
   },

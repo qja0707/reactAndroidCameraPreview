@@ -40,16 +40,17 @@ async function requestCameraPermission() {
 
 export default class CameraHeimdall extends Component {
   state = {
-    fill: 0,
-    isRecord: false,
+    fill: 0.01,
+    cameraFacing : 0,
+    isRecord: false, 
+    //timer: true,   
   };
 
   async componentWillMount() {
     await requestCameraPermission()
-  }
-
-  render() {
-    //console.log(this.state.isRecord);
+  } 
+  render() {    
+    //console.log('timer : ', this.state.timer);
     const { navigation } = this.props;
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -63,7 +64,8 @@ export default class CameraHeimdall extends Component {
 
             <View style={[styles.camera_wraping_view, { marginBottom: 20 }]}>
               <TouchableOpacity style={[styles.record_button, { backgroundColor: 'yellow', alignSelf: 'center' }]}
-                onPress={() => { navigation.navigate('ExternalLink') }}
+                //onPress={() => { navigation.navigate('ExternalLink') }}
+                onPress={() => { this.toggleTorch() }}
               />
             </View>
 
@@ -75,9 +77,12 @@ export default class CameraHeimdall extends Component {
                 width={5}
                 duration={30000}
                 rotation={0}
-                fill={this.state.fill}
+                fill={0.01}
                 tintColor="#ff0000"
-                onAnimationComplete={() => console.log('onAnimationComplete')}
+                onAnimationComplete={() => {
+                  console.log('onAnimationComplete');
+                  console.log(this.state.timer);
+                }}
                 backgroundColor="#3d5875"
               >
                 {
@@ -105,48 +110,67 @@ export default class CameraHeimdall extends Component {
       </SafeAreaView>
     );
   }
+  handleOnNavigateBack = (foo) => {
+    this.setState({
+      timer:foo
+    })
+  }
   cameraChange() {
-    console.log("1");
+    console.log("camera is changed");
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this.ref),
       UIManager.CameraView.Commands.changeCamera,
       //UIManager.getViewManagerConfig.Commands.changeCamera,
       [],
+    );    
+  }
+  toggleTorch(){
+    NativeModules.GetData.getCameraFacing(
+      (err,status) => {
+        this.setState({cameraFacing:status});
+        console.log('camerafacing : ', this.state.cameraFacing);
+        if(this.state.cameraFacing == 0){
+          console.log('torch enable');
+        }else{
+          console.log('torch disable');
+        }
+      }
     );
   }
   record(navigation) {
-    console.warn(NativeModules.GetData)
+    //console.warn(NativeModules.GetData)
     NativeModules.GetData.getIsRecording(
-      (err,status) => {        
-        this.setState({ isRecord: status });
-        this.setState({ fill: 100 })
-
+      (err, status) => {
+        //this.setState({ isRecord: status });
         UIManager.dispatchViewManagerCommand(
           ReactNative.findNodeHandle(this.ref),
           UIManager.CameraView.Commands.record,
           //UIManager.getViewManagerConfig.Commands.changeCamera,
           [],
         );
-        console.warn('is record : ', status);
+        console.log('is record : ', status);
         if (status == false) {
-
-        } else {
+          this.setState({ fill: 100 })
+          this.circularProgres.animate(100, 30000);
+        } else {          
+          //this.setState({timer:false});
+          //console.log("fill: ", this.circularProgres.state.fill);
+          this.circularProgres.animate(0.01, 30, Easing.quad);
           NativeModules.GetData.getFilePath(
             (err, getFilePath) => {
-              console.warn('file path ', getFilePath);
-              if(getFilePath != "null"){
+              //console.warn('file path ', getFilePath);
+              if (getFilePath != "null") {
                 console.warn('file path2 ', getFilePath);
-                navigation.navigate('AfterRecord', { filePath : getFilePath });
+                navigation.navigate('AfterRecord', { filePath: getFilePath, onNavigateBack: this.handleOnNavigateBack});
               }
-              else{
+              else {
                 console.log("file path is null");
               }
             }
-          )          
+          )
         }
       }
     );
-
   }
   /*
   start() {

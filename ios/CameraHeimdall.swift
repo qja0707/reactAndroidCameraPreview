@@ -41,6 +41,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
   let photoOutput = AVCaptureMovieFileOutput()
   static var isRecording = false
   static var fileUrl : URL = NSURL(string: "null")! as URL
+  static var cameraFacing = 0
   var totalCamera : Array<Any> = []
   var cameraIndex = 0
   
@@ -158,7 +159,15 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
       else { return }
     self.captureSession.addInput(videoDeviceInput)
     captureSession.commitConfiguration()
-    print("cameraIndex : ",cameraIndex)
+    print("cameraIndex : ",cameraIndex, " lensPosition : ", videoDeviceInput.device.position)
+    if(videoDeviceInput.device.position == .back){
+      print("back")
+      CameraHeimdall.cameraFacing = 0
+    }else{
+      print("front")
+      CameraHeimdall.cameraFacing = 1
+    }
+    
   }
   
   override func didMoveToSuperview() {
@@ -189,5 +198,8 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
   }
   static func getFileUrl() -> String{
     return CameraHeimdall.fileUrl.absoluteString
+  }
+  static func getCameraFacing() -> Int{
+    return CameraHeimdall.cameraFacing
   }
 }

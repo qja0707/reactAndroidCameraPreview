@@ -11,4 +11,5 @@
 @interface RCT_EXTERN_MODULE(GetData, NSObject)
 RCT_EXTERN_METHOD(getIsRecording:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(getFilePath:(RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(getCameraFacing:(RCTResponseSenderBlock)callback)
 @end

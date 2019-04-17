@@ -32,6 +32,8 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
 
     static Boolean isRecording = false;
     static File file;
+    static int cameraFacing = 0;
+
     MediaRecorder mediaRecorder;
 
     public CameraHeimdall(Context context) {
@@ -87,6 +89,8 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
 
         cameraIndex++;
         mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
+        Log.e("MyComponent","mCamera facing : "+ cameraInfo.facing);
+        cameraFacing = cameraInfo.facing;
 
         mPreview = new CameraPreview(context, mCamera);
         preview.addView(mPreview);
@@ -103,8 +107,6 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
                 getViewTreeObserver().dispatchOnGlobalLayout();
             }
         });
-
-        Log.e("MyComponent","mCamera : "+ cameraInfo.facing);
     }
     private Boolean recordStop(){
         // stop recording and release camera
