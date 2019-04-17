@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import ReactNative, {
   requireNativeComponent, ViewPropTypes, UIManager, findNodeHandle, Button, View, Alert, TouchableOpacity, StyleSheet, Easing, Text,
-  SafeAreaView, PermissionsAndroid, NativeModules
+  SafeAreaView, PermissionsAndroid, NativeModules, Platform
 } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import Torch from 'react-native-torch';
 
 
 
@@ -43,6 +44,7 @@ export default class CameraHeimdall extends Component {
     fill: 0.01,
     cameraFacing : 0,
     isRecord: false, 
+    isTorchOn : false,
     //timer: true,   
   };
 
@@ -123,6 +125,9 @@ export default class CameraHeimdall extends Component {
       //UIManager.getViewManagerConfig.Commands.changeCamera,
       [],
     );    
+    if(this.state.isTorchOn){
+      this.toggleTorch();
+    }
   }
   toggleTorch(){
     NativeModules.GetData.getCameraFacing(
@@ -130,7 +135,14 @@ export default class CameraHeimdall extends Component {
         this.setState({cameraFacing:status});
         console.log('camerafacing : ', this.state.cameraFacing);
         if(this.state.cameraFacing == 0){
-          console.log('torch enable');
+          console.log('torch enable');          
+          try{
+            Torch.switchState(!this.state.isTorchOn);
+            this.setState({isTorchOn:!this.state.isTorchOn});
+          }catch(e){
+            console.warn('this device does not have torch');
+          }
+          
         }else{
           console.log('torch disable');
         }
