@@ -2,6 +2,7 @@ package com.androidmoduletest4;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.location.LocationManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;

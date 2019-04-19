@@ -7,8 +7,6 @@ import ReactNative, {
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Torch from 'react-native-torch';
 
-
-
 //import console = require("console");
 var viewProps = {
   name: 'CameraView',
@@ -83,7 +81,7 @@ export default class CameraHeimdall extends Component {
                 tintColor="#ff0000"
                 onAnimationComplete={() => {
                   console.log('onAnimationComplete');
-                  console.log(this.state.timer);
+                  console.log(this.state.isRecord);
                 }}
                 backgroundColor="#3d5875"
               >
@@ -99,10 +97,13 @@ export default class CameraHeimdall extends Component {
                   )
                 }
               </AnimatedCircularProgress>
-            </View>
+            </View> 
 
             <View style={[styles.camera_wraping_view, { marginBottom: 20 }]}>
               <TouchableOpacity
+                //activeOpacity = {.5}
+                disabled={false}
+                
                 style={[styles.record_button, { backgroundColor: 'blue', alignSelf: 'center' }]}
                 onPress={() => { this.cameraChange() }}
               />
@@ -119,6 +120,7 @@ export default class CameraHeimdall extends Component {
   }
   cameraChange() {
     console.log("camera is changed");
+    //if(this.state.isRecord==true) return;
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this.ref),
       UIManager.CameraView.Commands.changeCamera,
@@ -161,6 +163,7 @@ export default class CameraHeimdall extends Component {
           [],
         );
         console.log('is record : ', status);
+        this.setState({isRecord : status});
         if (status == false) {
           this.setState({ fill: 100 })
           this.circularProgres.animate(100, 30000);
@@ -172,7 +175,7 @@ export default class CameraHeimdall extends Component {
             (err, getFilePath) => {
               //console.warn('file path ', getFilePath);
               if (getFilePath != "null") {
-                console.warn('file path2 ', getFilePath);
+                console.log('file path2 ', getFilePath);
                 navigation.navigate('AfterRecord', { filePath: getFilePath, onNavigateBack: this.handleOnNavigateBack});
               }
               else {

@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoListener{
     private Context context;
@@ -142,7 +144,7 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
     }
     private boolean prepareVideoRecorder(){
 
-        File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test");
+        File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/heimdall");
 
         if(!directory.exists()&& !directory.isDirectory()){
             Log.d("make directory", "prepareVideoRecorder: ");
@@ -153,7 +155,11 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
                 return false;
             }
         }
-        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test/test.mp4");
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdfNow = new SimpleDateFormat("yyMMdd_HHmmss");
+        String fileName = sdfNow.format(date);
+        file = new File(directory.getAbsolutePath()+"/"+fileName+".mp4");
 
         mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
         mCamera.setDisplayOrientation(90);
