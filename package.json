@@ -16,7 +16,8 @@
     "react-native-svg": "^9.3.7",
     "react-native-torch": "^1.1.5",
     "react-native-video": "^4.4.1",
-    "react-navigation": "^3.6.1"
+    "react-navigation": "^3.6.1",
+    "react-timer-mixin": "^0.13.4"
   },
   "devDependencies": {
     "@babel/core": "7.4.0",

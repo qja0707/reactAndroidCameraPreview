@@ -122,7 +122,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     //let photoOutput = AVCapturePhotoOutput()
     //photoOutput.maxRecordedDuration = maxDuration
     guard captureSession.canAddOutput(photoOutput) else { return }
-    captureSession.sessionPreset = .high
+    captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
     captureSession.addOutput(photoOutput)
     captureSession.commitConfiguration()
     
@@ -160,6 +160,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     self.captureSession.addInput(videoDeviceInput)
     captureSession.commitConfiguration()
     print("cameraIndex : ",cameraIndex, " lensPosition : ", videoDeviceInput.device.position)
+    print("torch mode supported : ", videoDeviceInput.device.isTorchAvailable)
     if(videoDeviceInput.device.position == .back){
       print("back")
       CameraHeimdall.cameraFacing = 0

@@ -121,12 +121,19 @@ export default class CameraHeimdall extends Component {
   cameraChange() {
     console.log("camera is changed");
     //if(this.state.isRecord==true) return;
-    UIManager.dispatchViewManagerCommand(
-      ReactNative.findNodeHandle(this.ref),
-      UIManager.CameraView.Commands.changeCamera,
-      //UIManager.getViewManagerConfig.Commands.changeCamera,
-      [],
-    );    
+    NativeModules.GetData.getIsRecording(
+      (err,status)=>{
+        if(status == false){
+          UIManager.dispatchViewManagerCommand(
+            ReactNative.findNodeHandle(this.ref),
+            UIManager.CameraView.Commands.changeCamera,
+            //UIManager.getViewManagerConfig.Commands.changeCamera,
+            [],
+          );
+        }
+      }
+    );
+        
     if(this.state.isTorchOn){
       this.toggleTorch();
     }
