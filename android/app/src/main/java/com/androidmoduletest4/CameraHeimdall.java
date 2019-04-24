@@ -161,8 +161,8 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
         String fileName = sdfNow.format(date);
         file = new File(directory.getAbsolutePath()+"/"+fileName+".mp4");
 
-        mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
-        mCamera.setDisplayOrientation(90);
+        //mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
+        //mCamera.setDisplayOrientation(90);
         mediaRecorder = new MediaRecorder();
 
         // Step 1: Unlock and set camera to MediaRecorder
