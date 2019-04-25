@@ -6,6 +6,7 @@ import ReactNative, {
 } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Torch from 'react-native-torch';
+import Orientation from 'react-native-orientation';
 
 //import console = require("console");
 var viewProps = {
@@ -49,6 +50,11 @@ export default class CameraHeimdall extends Component {
   async componentWillMount() {
     await requestCameraPermission()
   } 
+  componentDidMount() {
+    Orientation.lockToPortrait(); //this will lock the view to Portrait
+    this.subscription;
+  }
+
   render() {    
     //console.log('timer : ', this.state.timer);
     const { navigation } = this.props;

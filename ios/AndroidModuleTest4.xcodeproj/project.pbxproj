@@ -38,6 +38,7 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* AndroidModuleTest4Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* AndroidModuleTest4Tests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		5D295C242271B73200201807 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D295C032271B6FE00201807 /* libRCTOrientation.a */; };
 		5DA0067A225ED7DB00B7108A /* GetData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA00679225ED7DB00B7108A /* GetData.m */; };
 		5DAC87FC22534CF8002311DB /* CameraViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAC87FB22534CF8002311DB /* CameraViewManager.swift */; };
 		5DAC882B22534D79002311DB /* CameraViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DAC882A22534D79002311DB /* CameraViewManager.m */; };
@@ -265,6 +266,13 @@
 			remoteGlobalIDString = 3D3CD9321DE5FBEE00167DC4;
 			remoteInfo = "cxxreact-tvOS";
 		};
+		5D295C022271B6FE00201807 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5D295BF22271B6FE00201807 /* RCTOrientation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTOrientation;
+		};
 		5D8A50F72266B10B00F8B3B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CED77936F5DC4D71B6EA4319 /* RCTTorch.xcodeproj */;
@@ -406,6 +414,7 @@
 		4D2E23FA482245C38BF12A61 /* libRNGestureHandler-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNGestureHandler-tvOS.a"; sourceTree = "<group>"; };
 		4DF82C541DDD4D50945E827D /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		578A499DE71B40159994A25D /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
+		5D295BF22271B6FE00201807 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 		5DA00679225ED7DB00B7108A /* GetData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetData.m; sourceTree = "<group>"; };
 		5DAC87FA22534CF8002311DB /* AndroidModuleTest4-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AndroidModuleTest4-Bridging-Header.h"; sourceTree = "<group>"; };
 		5DAC87FB22534CF8002311DB /* CameraViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewManager.swift; sourceTree = "<group>"; };
@@ -440,6 +449,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D295C242271B73200201807 /* libRCTOrientation.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -622,6 +632,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5D295BF32271B6FE00201807 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D295C032271B6FE00201807 /* libRCTOrientation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		5D8A50F42266B10B00F8B3B6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -691,6 +709,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5D295BF22271B6FE00201807 /* RCTOrientation.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -899,6 +918,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = 5D295BF32271B6FE00201807 /* Products */;
+					ProjectRef = 5D295BF22271B6FE00201807 /* RCTOrientation.xcodeproj */;
 				},
 				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
@@ -1142,6 +1165,13 @@
 			fileType = archive.ar;
 			path = libcxxreact.a;
 			remoteRef = 3DAD3EAA1DF850E9000B6D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5D295C032271B6FE00201807 /* libRCTOrientation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOrientation.a;
+			remoteRef = 5D295C022271B6FE00201807 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5D8A50F82266B10B00F8B3B6 /* libRCTTorch.a */ = {
@@ -1481,6 +1511,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-torch/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
 				);
 				INFOPLIST_FILE = AndroidModuleTest4/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1511,6 +1542,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-torch/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
 				);
 				INFOPLIST_FILE = AndroidModuleTest4/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
