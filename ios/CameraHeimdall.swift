@@ -14,6 +14,7 @@ import CoreLocation
 
 @available(iOS 10.0, *)
 class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
+  
   func fileOutput(_ output: AVCaptureFileOutput,
                   didFinishRecordingTo outputFileURL: URL,
                   from connections: [AVCaptureConnection],
@@ -104,6 +105,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     
     
     self.captureSession.beginConfiguration()
+    
     //let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
     let videoDevice = totalCamera[cameraIndex]
     
@@ -121,9 +123,17 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     
     //let photoOutput = AVCapturePhotoOutput()
     //photoOutput.maxRecordedDuration = maxDuration
+    
     guard captureSession.canAddOutput(photoOutput) else { return }
+    
     captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
     captureSession.addOutput(photoOutput)
+    
+    let connection = photoOutput.connection(with: AVMediaType.video)!
+    photoOutput.setRecordsVideoOrientationAndMirroringChangesAsMetadataTrack(true, for: connection)
+    //let orientation = UIDevice.current.orientation
+    connection.videoOrientation = AVCaptureVideoOrientation(rawValue: 4)!
+    
     captureSession.commitConfiguration()
     
     self.previewView.videoPreviewLayer.session = captureSession

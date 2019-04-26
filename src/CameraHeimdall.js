@@ -68,8 +68,7 @@ export default class CameraHeimdall extends Component {
     this.subscription.unsubscribe();
     console.log("this view will be closed");
   }
-  _onOrientationDidChangeAndroid = ({ x, y, z, timestamp }) => {
-    console.log('on orientation did change',x,y,z,timestamp);
+  _onOrientationDidChangeAndroid = ({ x, y, z, timestamp }) => {    
     if (x > 8 && this.state.orientation != "landscape") {
       console.log("landscape");
       this.setState({orientation:"landscape"})
