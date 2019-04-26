@@ -34,6 +34,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         Log.e("MyComponent", "surface Created");
         try {
+            //change resolution to 1280 * 720
+            mCamera.stopPreview();
+
+            Camera.Parameters parameters = mCamera.getParameters();
+            //parameters.setVideoS(1280,720);
+            parameters.setPreviewSize(1280,720);
+            mCamera.setParameters(parameters);
+
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
@@ -103,6 +111,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         catch (Exception e){
             Log.e("MyComponent","get camera exception: "+e.getMessage());
         }
+        for (Camera.Size size: c.getParameters().getSupportedPictureSizes()
+             ) {
+            Log.e("MyComponent","supported picture size : "+size.height+" , "+size.width);
+        }
+
 
         return c; // returns null if camera is unavailable
     }

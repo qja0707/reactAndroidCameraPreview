@@ -188,6 +188,9 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
         // Step 4: Set output file
         mediaRecorder.setOutputFile(file.getPath());
 
+        //set video size
+        mediaRecorder.setVideoSize(1280,720);
+
         // Step 5: Set the preview output
         mediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
 
