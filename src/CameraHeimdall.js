@@ -7,6 +7,9 @@ import ReactNative, {
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Torch from 'react-native-torch';
 import Orientation from 'react-native-orientation';
+import { gyroscope, setUpdateIntervalForType, SensorTypes, accelerometer } from "react-native-sensors";
+
+setUpdateIntervalForType(SensorTypes.accelerometer, 2000);
 
 //import console = require("console");
 var viewProps = {
@@ -39,13 +42,20 @@ async function requestCameraPermission() {
 }
 
 export default class CameraHeimdall extends Component {
-  state = {
-    fill: 0.01,
-    cameraFacing : 0,
-    isRecord: false, 
-    isTorchOn : false,
-    //timer: true,   
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      fill: 0.01,
+      cameraFacing: 0,
+      isRecord: false,
+      isTorchOn: false,
+      orientation: "portrait"
+    };
+    this.subscription = accelerometer.subscribe(Platform.select({
+      ios: this._onOrientationDidChangeIOS,
+      android: this._onOrientationDidChangeAndroid,
+    }));
+  }
 
   async componentWillMount() {
     await requestCameraPermission()
@@ -53,6 +63,36 @@ export default class CameraHeimdall extends Component {
   componentDidMount() {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
     this.subscription;
+  }
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
+    console.log("this view will be closed");
+  }
+  _onOrientationDidChangeAndroid = ({ x, y, z, timestamp }) => {
+    console.log('on orientation did change',x,y,z,timestamp);
+    if (x > 8 && this.state.orientation != "landscape") {
+      console.log("landscape");
+      this.setState({orientation:"landscape"})
+    } else if (x < -8 && this.state.orientation != "landscape_reverse") {
+      console.log("landscape_reverse");
+      this.setState({orientation:"landscape_reverse"})
+    } else if(y > 8 && this.state.orientation != "portrait"){
+      console.log("portrait");
+      this.setState({orientation:"portrait"})
+    }
+  }
+  _onOrientationDidChangeIOS = ({ x, y, z, timestamp }) => {
+    console.log('on orientation did change',x,y,z,timestamp);
+    if (x < -0.8 && this.state.orientation != "landscape") {
+      console.log("landscape");
+      this.setState({orientation:"landscape"})
+    } else if (x > 0.8 && this.state.orientation != "landscape_reverse") {
+      console.log("landscape_reverse");
+      this.setState({orientation:"landscape_reverse"})
+    } else if(y < -0.8 && this.state.orientation != "portrait"){
+      console.log("portrait");
+      this.setState({orientation:"portrait"})
+    }
   }
 
   render() {    
