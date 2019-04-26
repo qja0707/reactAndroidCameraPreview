@@ -23,8 +23,8 @@ class CameraViewManager: RCTViewManager{
   }
   
   @objc
-  func record(_ node:NSNumber){
-    cameraHeimdall.record()
+  func record(_ node:NSNumber, orientation: NSString){
+    cameraHeimdall.record(orientation: orientation)
     
   }
 }

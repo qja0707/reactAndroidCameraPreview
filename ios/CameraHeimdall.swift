@@ -129,10 +129,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
     captureSession.addOutput(photoOutput)
     
-    let connection = photoOutput.connection(with: AVMediaType.video)!
-    photoOutput.setRecordsVideoOrientationAndMirroringChangesAsMetadataTrack(true, for: connection)
-    //let orientation = UIDevice.current.orientation
-    connection.videoOrientation = AVCaptureVideoOrientation(rawValue: 4)!
+    //original locate
     
     captureSession.commitConfiguration()
     
@@ -185,7 +182,7 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
     self.previewView.frame.size = self.preView.frame.size
   }
   
-  @objc func record(){
+  @objc func record(orientation:NSString){
     print("cameraIndex : ",cameraIndex)
     
     
@@ -194,8 +191,19 @@ class CameraHeimdall: UIView, AVCaptureFileOutputRecordingDelegate{
       CameraHeimdall.isRecording = false
       print("record stop")
     } else {
+      var orientationValue = 1
+      if(orientation == "landscape") {orientationValue = 3}
+      else if(orientation == "landscape_reverse"){orientationValue = 4}
+      let connection = photoOutput.connection(with: AVMediaType.video)!
+      photoOutput.setRecordsVideoOrientationAndMirroringChangesAsMetadataTrack(true, for: connection)
+      connection.videoOrientation = AVCaptureVideoOrientation(rawValue: orientationValue)!
+      
+      let now=NSDate()
+      let dateFormatter = DateFormatter();
+      dateFormatter.dateFormat = "yyMMdd_HHmmss"
+      
       let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-      CameraHeimdall.fileUrl = paths[0].appendingPathComponent("output.mov")
+      CameraHeimdall.fileUrl = paths[0].appendingPathComponent(dateFormatter.string(from: now as Date)+".mp4")
       try? FileManager.default.removeItem(at: CameraHeimdall.fileUrl)
       photoOutput.startRecording(to: CameraHeimdall.fileUrl, recordingDelegate: self as AVCaptureFileOutputRecordingDelegate)
       CameraHeimdall.isRecording = true

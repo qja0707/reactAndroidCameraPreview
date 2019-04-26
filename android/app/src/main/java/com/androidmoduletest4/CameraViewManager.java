@@ -62,7 +62,7 @@ public class CameraViewManager extends SimpleViewManager<CameraHeimdall> {
             case RECORD:{
                 Log.e("MyComponent","android record");
                 //Toast.makeText(context,"asdf",Toast.LENGTH_SHORT);
-                cameraHeimdall.record();
+                cameraHeimdall.record(args.getString(0));
                 break;
             }
         }

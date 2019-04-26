@@ -122,12 +122,18 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
         return isRecording;
     }
 
-    public void record(){
+    public void record(String orientation){
         if (isRecording) {
             recordStop();
         } else {
+            int orientationAngle=0;
+            if(orientation.equals("portrait")){
+                orientationAngle = 90;
+            }else if(orientation.equals("landscape_reverse")){
+                orientationAngle = 180;
+            }
             // initialize video camera
-            if (prepareVideoRecorder()) {
+            if (prepareVideoRecorder(orientationAngle)) {
                 // Camera is available and unlocked, MediaRecorder is prepared,
                 // now you can start recording
                 mediaRecorder.start();
@@ -142,7 +148,7 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
             }
         }
     }
-    private boolean prepareVideoRecorder(){
+    private boolean prepareVideoRecorder(int orientation){
 
         File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/heimdall");
 
@@ -164,6 +170,9 @@ public class CameraHeimdall extends FrameLayout implements MediaRecorder.OnInfoL
         //mCamera = CameraPreview.getCameraInstance(cameraIndex, cameraInfo);
         //mCamera.setDisplayOrientation(90);
         mediaRecorder = new MediaRecorder();
+
+        mediaRecorder.setOrientationHint(orientation);
+
 
         // Step 1: Unlock and set camera to MediaRecorder
         mCamera.unlock();

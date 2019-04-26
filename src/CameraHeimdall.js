@@ -81,7 +81,6 @@ export default class CameraHeimdall extends Component {
     }
   }
   _onOrientationDidChangeIOS = ({ x, y, z, timestamp }) => {
-    console.log('on orientation did change',x,y,z,timestamp);
     if (x < -0.8 && this.state.orientation != "landscape") {
       console.log("landscape");
       this.setState({orientation:"landscape"})
@@ -212,7 +211,7 @@ export default class CameraHeimdall extends Component {
           ReactNative.findNodeHandle(this.ref),
           UIManager.CameraView.Commands.record,
           //UIManager.getViewManagerConfig.Commands.changeCamera,
-          [],
+          [this.state.orientation],
         );
         console.log('is record : ', status);
         this.setState({isRecord : status});
