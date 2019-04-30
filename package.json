@@ -8,6 +8,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "buffer": "^5.2.1",
     "react": "16.8.3",
     "react-native": "0.59.3",
     "react-native-circular-progress": "^1.1.0",
