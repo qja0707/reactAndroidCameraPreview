@@ -14,14 +14,15 @@ export default class AfterRecord extends React.Component {
             fromY: 0.01,
             toY: 150,
         };
-        this.serverAddr = 'http://192.168.50.12:3001';
-        this.filePath='';
+        this.serverAddr = 'http://172.30.1.47:3001';        
     }
 
     render() {
         const { navigation } = this.props;
         const filePath = navigation.getParam('filePath', 'null');
         this.filePath = filePath;
+        this.fileName = filePath.split("/").pop();
+        console.log("file name : "+this.fileName);
         navigation.state.params.onNavigateBack(true);
         //console.warn("after record : ", filePath);
         return (
@@ -95,7 +96,7 @@ export default class AfterRecord extends React.Component {
                 "video_upload_type": "heimdall",
                 "video_upload_request_id": 0,
                 "video_upload_accept_id": 0,
-                "video_upload_original_file": this.filePath,
+                "video_upload_original_file": this.fileName,
                 "video_upload_tag": "test:test",
                 "video_open_status": 1,
                 "video_description": "string",
@@ -109,7 +110,7 @@ export default class AfterRecord extends React.Component {
             })
         );
 
-        let uploadVideoFileResponse = await this.restModule(this.serverAddr + '/api/gloovir_video_upload/testupload/'+uploadVideoStartResponse.upload_bucket_path+'/'+this.filePath,
+        let uploadVideoFileResponse = await this.restModule(this.serverAddr + '/api/gloovir_video_upload/testupload/'+uploadVideoStartResponse.upload_bucket_path+'/'+this.fileName,
             'POST',
             {
                 Accept: 'application/json',
